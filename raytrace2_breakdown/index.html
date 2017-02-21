@@ -662,7 +662,7 @@ bool raytrace() {
 }
 
 bool Shadowtrace(vec3 V2, vec3 LDir) {
-   float distance = 1000.;
+   float distance = 100.;
    for (int i = 0 ; i < uSpheres_length ; i++) {
       vec2 t = raytraceSphere(V2, LDir, uSpheres[i]);
       if (t.x < distance) {
@@ -673,7 +673,7 @@ bool Shadowtrace(vec3 V2, vec3 LDir) {
          distance = t.x;
       }
    }
-   return distance < 1000.;
+   return distance < 100.;
 }
 
 
@@ -682,7 +682,7 @@ vec3 phong(vec3 N, vec3 E, vec3 A, vec3 D, vec4 S) {
    vec3 c = A * backgroundColor(N);            // Ambient color
    for (int i = 0 ; i < uLDirs_length ; i++) { // Loop through lights
       vec3  LDir = normalize(uLDirs[i]);
-      vec3 V2 = P + vec3(0.01, 0.01, 0.01);
+      vec3 V2 = P + vec3(0.04, 0.04, 0.04);
       if (! Shadowtrace(V2, LDir)){
       	float d = max(0., dot(N, LDir));       // Diffuse value
       	vec3  R = vec3(0.5,0.5,0.5);            //reflection(LDir, vec3(.0,.0,.0)); //reflection
