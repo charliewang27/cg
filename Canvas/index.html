@@ -1,0 +1,84 @@
+<table>
+
+<tr>
+<td><canvas id=canvas1 width=800 height=600></td>
+<td width=50></td>
+<td>
+I am a useless clock.
+</td>
+</tr>
+
+<tr>
+<td><canvas id=canvas2 width=800 height=600></td>
+<td width=50></td>
+</tr>
+
+</table>
+
+<script src=drawlib1.js></script>
+<script>
+   canvas1.update = function(g) {
+      //var blue = 128 + Math.floor(10 * Math.sin(time));
+      //blue = 0;
+    
+      g.lineWidth = 10;
+      g.lineCap = 'square';
+      g.lineJoin = 'round';
+
+      g.beginPath();
+      g.moveTo(0, 0);
+      g.lineTo(this.width, 0);
+      g.lineTo(this.width, this.height);
+      g.lineTo(0, this.height);
+      g.lineTo(0, 0);
+      g.stroke();
+      g.beginPath();
+
+      var x = this.cursor.x;
+      var y = this.cursor.y;
+      var z = this.cursor.z;
+
+      var x1 = this.cursor.x;
+      var y1 = this.cursor.y;
+
+   
+      if (z == 0) {
+         x = this.width / 2;
+         y = this.height / 2;
+        
+      }
+
+      var angle = Math.sin(time * 5);
+      var flapY = 150*Math.sin(angle);
+      var flapX = 150 * Math.cos(angle);
+      g.moveTo(x-flapX, y-flapY);
+      g.moveTo(x-flapX*2, y-flapY*2);
+      g.lineTo(x, y);
+      g.lineTo(500,300);
+      g.lineTo(x, 150);
+      g.lineTo(x,y);
+      g.lineTo(x, 50);
+      g.moveTo(x-flapX, y-flapY);
+      //g.moveTo(x-flapX*2, y-flapY*2);
+      g.lineTo(x+50,300);
+      g.moveTo(x-flapX, y-flapY);
+      g.moveTo(x-flapX*2, y-flapY*2);
+      g.lineTo(x, 200);
+      g.moveTo(x-flapX, y-flapY);
+      g.lineTo(x, 500);
+      g.moveTo(x-flapX*2, y-flapY*2);
+      g.lineTo(200, y);
+      g.lineTo(500, y);
+      g.lineTo(x+flapX*2, y-flapY*2);
+      g.lineTo(550, y);
+      //g.moveTo(x-flapX, y-flapY);
+      g.lineTo(x+flapX*2, y-flapY*2);
+
+      g.stroke();
+   }
+
+
+   draw2DCanvases([canvas1]);
+</script>
+
+
