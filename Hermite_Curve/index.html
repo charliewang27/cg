@@ -1,0 +1,104 @@
+
+<table>
+
+<tr>
+<td><canvas id=canvas1 width=600 height=400></td>
+<td width=50></td>
+<td valign=top>
+Charlie Wang Initial
+</b></big>
+</td>
+</tr>
+
+</table>
+
+<script src=drawlib2.js></script>
+<script src=M.js></script>
+<script src=S.js></script>
+<script>
+
+   var m = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+
+   var Hermite = [ 2,-3,0,1,  -2,3,0,0,  1,-2,1,0,  1,-1,0,0 ];
+
+   function cubic(A, t) { return A[0] * t*t*t + A[1] * t*t + A[2] * t + A[3]; }
+
+   canvas1.update = function(g) {
+      g.lineCap = 'round';
+      g.lineJoin = 'round';
+      g.lineWidth = 1;
+
+      // OUTLINE THE CANVAS
+
+      g.beginPath();
+      g.moveTo(0,0);
+      g.lineTo(this.width,0);
+      g.lineTo(this.width,this.height);
+      g.lineTo(0,this.height);
+      g.lineTo(0,0);
+      g.stroke();
+
+      var C = [
+                [ -.4, .5,  -0.5],
+                [  -0.6,  0.25, -0.5],
+		            [  -0.5, 0.0,  0], 
+  
+          
+	      ];
+
+      var R = [
+                [   -1,   0,  0],
+                [   0,   -1,  Math.sin(time)],
+		            [   0,   1,  1],
+              ];
+
+      for (var i = 0.0; i < 1000.0; i ++){
+        C.push(i,i,i);
+        C.push([-0.3, 0.5, 0.0]);
+        C.push([-0.3, 0.0, 0.0]);
+
+        C.push([-0.1, 0.5, 0.0]);
+        C.push([0.2, 0.0, 0.0]);
+        C.push([0.4, 0.5, 0.0]);
+
+        R.push(i,i,i);
+        R.push([1,0,Math.sin(time)]);
+        R.push([1,0,0]);
+        R.push([0,0,-1]);
+        R.push([1,1,-1]);
+        R.push([0,1,Math.sin(time)]);
+      }
+
+
+      M.identity(m);
+      M.save(m);
+
+         M.rotateY(m, Math.PI/4);
+
+         var curves = [];
+
+         for (var n = 0 ; n < C.length-1 ; n++) {
+            var X = M.transform(Hermite, [ C[n][0], C[n+1][0], R[n][0], R[n+1][0] ]);
+            var Y = M.transform(Hermite, [ C[n][1], C[n+1][1], R[n][1], R[n+1][1] ]);
+            var Z = M.transform(Hermite, [ C[n][2], C[n+1][2], R[n][2], R[n+1][2] ]);
+
+            var curve = [];
+
+            for (var t = 0 ; t < 1.0001 ; t += 1/20)
+               curve.push( [ cubic(X, t), cubic(Y, t), cubic(Z, t)]);
+               //curve1.push([cubic(X1,t), cubic(Y1,t), cubic(Z1, t)]);
+            curves.push(curve);
+            //curves.push(curve1);
+         }
+
+
+
+
+         this.drawCurves(m, curves );
+
+      M.restore(m);
+   }
+
+   drawCanvases([canvas1]);
+</script>
+
