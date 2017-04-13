@@ -5,6 +5,7 @@
 <td>
   <canvas id=canvas1 width=600 height=400></canvas>
   <button type="submit" id="pointSwitch"> Points Visibility</button>
+  <button type="submit" id="colorChange"> Color Change </button>
 </td>
 <td width=50></td>
 <td valign=top>
@@ -63,6 +64,13 @@ Some ways this could be extended:
     switchButton.addEventListener('click', function() {
        pointsSwitch = !pointsSwitch;
     });
+
+    var colorSwitch = false;
+    var colorButton = document.querySelector('#colorChange');
+    colorButton.addEventListener('click', function(){
+      colorSwitch  = ! colorSwitch;
+    })
+
 
    canvas1.update = function(g) {
       g.lineCap = 'round';
@@ -134,7 +142,13 @@ Some ways this could be extended:
             for (t = 0 ; t < 1.0001 ; t += 1/20)
                curve.push( [ cubic(X, t), cubic(Y, t), cubic(Z, t) ] );
          }
-         g.fillStyle = 'rgb(0,100,100)';
+
+         if (colorSwitch){
+            g.fillStyle = 'rgb(0,100,100)';
+         }else{
+            g.fillStyle = 'rgb(100,0,0)';
+         }
+         
          this.drawCurves(m, [ curve ], true); // Set isFill flag to true.
       
 
